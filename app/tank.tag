@@ -19,34 +19,47 @@
   </div>
 
   <div>
-    <p>Alarm SetPoint: {this.alarmSetPoint}</p>  
-    <p>Water Level: {this.waterLevel}</p>  
+    <p class='{variable}'>Alarm SetPoint: {alarmSetPoint}</p>  
+    <p>Water Level: {waterLevel}</p>
+    <p>{alarm}</p>
   </div>
   <div class="chart-gauge"></div>
 
   <script type='text/babel'>
-    let ctrl = this
+    let _this = this
     // default values
-    ctrl.waterLevel = 200
-    ctrl.alarmSetPoint = 500
+    this.waterLevel = 0
+    this.alarmSetPoint = 500
+    this.alarm = ''
     
-    // on init 
+    // on init
+    this.alarmSetPointInput = this.alarmSetPoint
 
-    ctrl.addWater = (e) => {
-      if (this.addWaterInput.value) {
-        ctrl.waterLevel += parseInt(this.addWaterInput.value)
+    this.on('update', function() {
+      checkLevel()
+    })
+
+    this.addWater = (e) => {
+      if (_this.addWaterInput.value) {
+        _this.waterLevel += parseInt(_this.addWaterInput.value)
       } else {
         alert('invalid value')
       }
     };
     
-    ctrl.changeSetPoint = (e) => {
-      if (this.alarmSetPointInput.value) {
-        ctrl.alarmSetPoint = this.alarmSetPointInput.value
+    this.changeSetPoint = (e) => {
+      if (_this.alarmSetPointInput.value) {
+        _this.alarmSetPoint = _this.alarmSetPointInput.value
       } else {
         alert('invalid value')
       }
     };
+
+    function checkLevel () {
+      if (_this.waterLevel >= _this.alarmSetPoint) {
+        _this.alarm = 'CAUTION WATER LEVEL REACHED'
+      }
+    }
 
 
   </script>
@@ -55,8 +68,6 @@
     .customForm {
       margin-bottom: 20px
     }
-
-    
 
   </style>
 </tank>
