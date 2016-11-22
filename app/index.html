@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Meshify Demo</title>
+  <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="./tank-banner.css" rel="stylesheet"/>
+</head>
+  <body>
+    <!-- mount point -->
+    
+    <tank></tank>
+
+    <!-- include riot.js -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/riot/riot.min.js"></script>
+    <script src="../dist/tank.js"></script>
+
+    <!-- mount normally -->
+    <script>
+    riot.mount('tank', { title: 'Say hello!'});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "meshify-demo",
+  "version": "1.0.0",
+  "description": "a simple riot.js demo",
+  "main": "index.js",
+  "scripts": {
+    "watch": "riot -w --type babel app dist",
+    "browsersync": "browser-sync start --server --files 'dist/*.js, app/*.html' --startPath app",
+    "serve": "parallelshell 'npm run watch' 'npm run browsersync'"
+  },
+  "author": "Sergio Martin",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015-riot": "^1.1.0",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "riot": "^2.6.7"
+  },
+  "devDependencies": {
+    "babel-plugin-external-helpers-2": "^6.3.13",
+    "browser-sync": "^2.18.2",
+    "parallelshell": "^2.0.0"
+  }
+}
