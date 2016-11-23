@@ -83,10 +83,6 @@
       checkAlarms()
     })
 
-    // on init
-    // set vw setPoint 
-    // this.alarmSetPointInput = this.alarmSetPoint
-
     this.startPump = (e) => {
       if (_this.pumpSetPointInput.value) {
         let pumpRate = parseInt(_this.pumpSetPointInput.value)
@@ -140,7 +136,7 @@
       }
     };
 
-  // update alarm for water level
+    // update alarm for water level
     function checkAlarms () {
       _this.levelAlarm = _this.waterLevel >= _this.alarmSetPoint
       ? 'CAUTION WATER LEVEL REACHED'
@@ -151,7 +147,7 @@
       : 'OK' 
     
     }
-
+    // update tank gauge
     function updateTank() {
       _this.gauge1.update(_this.waterLevel/100)
     }

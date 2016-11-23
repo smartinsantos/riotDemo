@@ -30,10 +30,6 @@ this.on('update', function () {
   checkAlarms();
 });
 
-// on init
-// set vw setPoint
-// this.alarmSetPointInput = this.alarmSetPoint
-
 this.startPump = function (e) {
   if (_this.pumpSetPointInput.value) {
     var pumpRate = parseInt(_this.pumpSetPointInput.value);
@@ -92,7 +88,7 @@ function checkAlarms() {
 
   _this.overflowAlarm = _this.waterLevel >= _this.tankCapacity ? 'TANK OVERFLOW (pump stopped!)' : 'OK';
 }
-
+// update tank gauge
 function updateTank() {
   _this.gauge1.update(_this.waterLevel / 100);
 }
