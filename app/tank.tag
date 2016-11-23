@@ -1,37 +1,56 @@
 <tank>
   <h3 class='text-center'>{opts.title}</h3>
-  <div class='row container center-block'>
-    <form class='col-xs-12 customForm'>
-      <div class="form-group">
-        <label for="pumpSetPointInput">Water Pump</label>
-        <input type="number" min="0" class="form-control" id="pumpSetPointInput" placeholder="Strokes/Sec (max 100)">
-      </div>
-      <button disabled={ pump.on === true } type="submit" class="btn btn-block btn-info" onclick="{ startPump }">Start Pump</button>        
-      <button disabled={ pump.on === false } type="submit" class="btn btn-block btn-danger" onclick="{ stopPump }">Stop Pump</button>        
+  <div class='row'>
+    <div class='row container center-block col-xs-6'>
+      <form class='col-xs-12 customForm'>
+        <div class="form-group">
+          <label for="pumpSetPointInput">Water Pump</label>
+          <input type="number" min="0" class="form-control" id="pumpSetPointInput" placeholder="Gallons/Sec (max 100)">
+        </div>
+        <div class='row container center-block col-xs-12'>
+          <button disabled={ pump.on === true } 
+                  onclick="{ startPump }"
+                  type="submit" 
+                  class="btn btn-info col-xs-5">      
+            Start Pump
+          </button>        
+          <button disabled={ pump.on === false } 
+                  onclick="{ stopPump }"
+                  type="submit" 
+                  class="btn btn-danger col-xs-5 col-xs-offset-1">
+            Stop Pump
+          </button>           
+        </div>
 
-    </form>
+      </form>
+      
+      <form class='col-xs-12 customForm'>
+        <div class="form-group">
+          <label for="alarmSetPointInput">Alarm Set Point</label>
+          <input type="number" class="form-control" id="alarmSetPointInput" placeholder="Gallons ( def 5000 Gal )">
+        </div>
+        <button type="submit" class="btn btn-block btn-success" onclick="{ changeSetPoint }">Set</button>         
+      </form>
+    </div>
     
-    <form class='col-xs-12 customForm'>
-      <div class="form-group">
-        <label for="alarmSetPointInput">Alarm Set Point</label>
-        <input type="number" class="form-control" id="alarmSetPointInput" placeholder="Gallons">
-      </div>
-      <button  type="submit" class="btn btn-block btn-success" onclick="{ changeSetPoint }">Set</button>         
-    </form>
+    <div class='col-xs-6'>
+      <h3>Tank Capacity: {tankCapacity} Gals.</h3>
+      <h3>Alarm SetPoint: {alarmSetPoint} Gals.</h3>  
+      <h3>Water Level: {waterLevel} Gals.</h3>
+      <h3>Level Alarm: <span class= { alarm: levelAlarm !== 'OK' }>{levelAlarm}</span></h3>
+      <h3>OverFlow Alarm: <span class={ alarm: overflowAlarm !== 'OK' }>{overflowAlarm}</span></h3>
+    </div>
+  
   </div>
-
-  <div>
-    <p class='{variable}'>Alarm SetPoint: {alarmSetPoint}</p>  
-    <p>Water Level: {waterLevel}</p>
-    <p>Level Alarm: {levelAlarm}</p>
-    <p>OverFlow Alarm: {overflowAlarm}</p>
-
-  </div>
-  <div class="chart-gauge"></div>
-
+  
   <script type='text/babel'>
     let _this = this
     
+  // curious about all events ?
+  this.on('*', function(eventName) {
+    console.info(eventName)
+  })
+
     // init values
     this.on('mount', function() {
       _this.waterLevel = 0
@@ -51,7 +70,7 @@
 
     // on init
     // set vw setPoint 
-    this.alarmSetPointInput = this.alarmSetPoint
+    // this.alarmSetPointInput = this.alarmSetPoint
 
     this.startPump = (e) => {
       if (_this.pumpSetPointInput.value) {
@@ -111,7 +130,7 @@
       : 'OK' 
 
       _this.overflowAlarm = _this.waterLevel >= _this.tankCapacity
-      ? 'TANK OVERFLOW'
+      ? 'TANK OVERFLOW (pump stopped!)'
       : 'OK' 
     }
 
@@ -120,6 +139,10 @@
   <style>
     .customForm {
       margin-bottom: 20px
+    }
+
+    .alarm {
+      color: red;
     }
 
   </style>
