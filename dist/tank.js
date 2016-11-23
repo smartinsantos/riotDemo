@@ -3,11 +3,6 @@ riot.tag2('tank', '<h3 class="text-center">{opts.title}</h3> <div class="row"> <
 
 var _this = this;
 
-// curious about all events ?
-this.on('*', function (eventName) {
-  console.info(eventName);
-});
-
 // init values
 this.on('mount', function () {
   _this.waterLevel = 0;
@@ -32,7 +27,6 @@ this.on('mount', function () {
 
 // life hooks
 this.on('update', function () {
-  console.log('updating');
   checkAlarms();
 });
 

@@ -56,11 +56,6 @@
   <script type='text/babel'>
     let _this = this
     
-  // curious about all events ?
-  this.on('*', function(eventName) {
-    console.info(eventName)
-  })
-
     // init values
     this.on('mount', function() {
       _this.waterLevel = 0
@@ -85,7 +80,6 @@
     
     // life hooks 
     this.on('update', function() {
-      console.log('updating')
       checkAlarms()
     })
 
