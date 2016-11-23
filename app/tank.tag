@@ -6,7 +6,9 @@
         <label for="pumpSetPointInput">Water Pump</label>
         <input type="number" min="0" class="form-control" id="pumpSetPointInput" placeholder="Strokes/Sec (max 100)">
       </div>
-      <button type="submit" class="btn btn-block btn-info" onclick="{ startPump }">Start Pump</button>        
+      <button disabled={ pump.on === true } type="submit" class="btn btn-block btn-info" onclick="{ startPump }">Start Pump</button>        
+      <button disabled={ pump.on === false } type="submit" class="btn btn-block btn-danger" onclick="{ stopPump }">Stop Pump</button>        
+
     </form>
     
     <form class='col-xs-12 customForm'>
@@ -14,15 +16,15 @@
         <label for="alarmSetPointInput">Alarm Set Point</label>
         <input type="number" class="form-control" id="alarmSetPointInput" placeholder="Gallons">
       </div>
-      <button disabled={ pump.on } type="submit" class="btn btn-block btn-success" onclick="{ changeSetPoint }">Set</button>         
+      <button  type="submit" class="btn btn-block btn-success" onclick="{ changeSetPoint }">Set</button>         
     </form>
   </div>
 
   <div>
     <p class='{variable}'>Alarm SetPoint: {alarmSetPoint}</p>  
     <p>Water Level: {waterLevel}</p>
-    <p>{levelAlarm}</p>
-    <p>{overflowAlarm}</p>
+    <p>Level Alarm: {levelAlarm}</p>
+    <p>OverFlow Alarm: {overflowAlarm}</p>
 
   </div>
   <div class="chart-gauge"></div>
@@ -35,9 +37,10 @@
       _this.waterLevel = 0
       _this.alarmSetPoint = 5000
       _this.tankCapacity = 10000
-      _this.levelAlarm = ''
-      _this.overflowAlarm = ''
+      _this.levelAlarm = 'OK'
+      _this.overflowAlarm = 'OK'
       _this.pump = new pumpModel()
+      _this.update()
     })
     
     // life hooks 
@@ -53,12 +56,15 @@
     this.startPump = (e) => {
       if (_this.pumpSetPointInput.value) {
         let pumpRate = parseInt(_this.pumpSetPointInput.value)
-        console.log('starting pump at: ', pumpRate)
         _this.pump.start(pumpRate)
       
       } else {
         alert('invalid value')
       }
+    };
+
+    this.stopPump = (e) => {
+      _this.pump.stop()
     };
     
     this.changeSetPoint = (e) => {
@@ -102,11 +108,11 @@
     function checkAlarms () {
       _this.levelAlarm = _this.waterLevel >= _this.alarmSetPoint
       ? 'CAUTION WATER LEVEL REACHED'
-      : '' 
+      : 'OK' 
 
       _this.overflowAlarm = _this.waterLevel >= _this.tankCapacity
       ? 'TANK OVERFLOW'
-      : '' 
+      : 'OK' 
     }
 
   </script>

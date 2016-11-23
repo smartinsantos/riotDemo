@@ -1,4 +1,4 @@
-riot.tag2('tank', '<h3 class="text-center">{opts.title}</h3> <div class="row container center-block"> <form class="col-xs-12 customForm"> <div class="form-group"> <label for="pumpSetPointInput">Water Pump</label> <input min="0" class="form-control" id="pumpSetPointInput" placeholder="Strokes/Sec (max 100)" type="number"> </div> <button type="submit" class="btn btn-block btn-info" onclick="{startPump}">Start Pump</button> </form> <form class="col-xs-12 customForm"> <div class="form-group"> <label for="alarmSetPointInput">Alarm Set Point</label> <input class="form-control" id="alarmSetPointInput" placeholder="Gallons" type="number"> </div> <button __disabled="{pump.on}" type="submit" class="btn btn-block btn-success" onclick="{changeSetPoint}">Set</button> </form> </div> <div> <p class="{variable}">Alarm SetPoint: {alarmSetPoint}</p> <p>Water Level: {waterLevel}</p> <p>{levelAlarm}</p> <p>{overflowAlarm}</p> </div> <div class="chart-gauge"></div>', '.customForm { margin-bottom: 20px }', '', function(opts) {
+riot.tag2('tank', '<h3 class="text-center">{opts.title}</h3> <div class="row container center-block"> <form class="col-xs-12 customForm"> <div class="form-group"> <label for="pumpSetPointInput">Water Pump</label> <input min="0" class="form-control" id="pumpSetPointInput" placeholder="Strokes/Sec (max 100)" type="number"> </div> <button __disabled="{pump.on === true}" type="submit" class="btn btn-block btn-info" onclick="{startPump}">Start Pump</button> <button __disabled="{pump.on === false}" type="submit" class="btn btn-block btn-danger" onclick="{stopPump}">Stop Pump</button> </form> <form class="col-xs-12 customForm"> <div class="form-group"> <label for="alarmSetPointInput">Alarm Set Point</label> <input class="form-control" id="alarmSetPointInput" placeholder="Gallons" type="number"> </div> <button type="submit" class="btn btn-block btn-success" onclick="{changeSetPoint}">Set</button> </form> </div> <div> <p class="{variable}">Alarm SetPoint: {alarmSetPoint}</p> <p>Water Level: {waterLevel}</p> <p>Level Alarm: {levelAlarm}</p> <p>OverFlow Alarm: {overflowAlarm}</p> </div> <div class="chart-gauge"></div>', '.customForm { margin-bottom: 20px }', '', function(opts) {
 'use strict';
 
 var _this = this;
@@ -8,9 +8,10 @@ this.on('mount', function () {
   _this.waterLevel = 0;
   _this.alarmSetPoint = 5000;
   _this.tankCapacity = 10000;
-  _this.levelAlarm = '';
-  _this.overflowAlarm = '';
+  _this.levelAlarm = 'OK';
+  _this.overflowAlarm = 'OK';
   _this.pump = new pumpModel();
+  _this.update();
 });
 
 // life hooks
@@ -26,11 +27,14 @@ this.alarmSetPointInput = this.alarmSetPoint;
 this.startPump = function (e) {
   if (_this.pumpSetPointInput.value) {
     var pumpRate = parseInt(_this.pumpSetPointInput.value);
-    console.log('starting pump at: ', pumpRate);
     _this.pump.start(pumpRate);
   } else {
     alert('invalid value');
   }
+};
+
+this.stopPump = function (e) {
+  _this.pump.stop();
 };
 
 this.changeSetPoint = function (e) {
@@ -72,8 +76,8 @@ function pumpModel() {
 
 // update alarm for water level
 function checkAlarms() {
-  _this.levelAlarm = _this.waterLevel >= _this.alarmSetPoint ? 'CAUTION WATER LEVEL REACHED' : '';
+  _this.levelAlarm = _this.waterLevel >= _this.alarmSetPoint ? 'CAUTION WATER LEVEL REACHED' : 'OK';
 
-  _this.overflowAlarm = _this.waterLevel >= _this.tankCapacity ? 'TANK OVERFLOW' : '';
+  _this.overflowAlarm = _this.waterLevel >= _this.tankCapacity ? 'TANK OVERFLOW' : 'OK';
 }
 });
