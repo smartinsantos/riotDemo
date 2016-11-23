@@ -2,6 +2,6 @@
 ## Dependencies
 Tools needed to run this app:
 * `node` and `npm`
-Once you have these :  
+## THEN RUN:
 * `npm install`
 * `npm run serve`
